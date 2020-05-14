@@ -406,6 +406,17 @@ void TilesetDocument::setTileProbability(Tile *tile, qreal probability)
         emit mapDocument->tileProbabilityChanged(tile);
 }
 
+void TilesetDocument::setTileCantPass(Tile *tile, bool cantPass)
+{
+    Q_ASSERT(tile->tileset() == mTileset.data());
+
+    tile->setCantPass(cantPass);
+    emit tileCantPassChanged(tile);
+
+    for (MapDocument *mapDocument : mapDocuments())
+        emit mapDocument->tileCantPassChanged(tile);
+}
+
 void TilesetDocument::swapTileObjectGroup(Tile *tile, std::unique_ptr<ObjectGroup> &objectGroup)
 {
     tile->swapObjectGroup(objectGroup);

@@ -130,6 +130,9 @@ public:
     inline unsigned terrain() const;
     void setTerrain(unsigned terrain);
 
+    bool cantPass() const;
+    void setCantPass(bool cantPass);
+
     qreal probability() const;
     void setProbability(qreal probability);
 
@@ -158,6 +161,7 @@ private:
     QString mType;
     unsigned mTerrain;
     qreal mProbability;
+    bool mCantPass;
     std::unique_ptr<ObjectGroup> mObjectGroup;
 
     QVector<Frame> mFrames;
@@ -283,12 +287,22 @@ inline unsigned Tile::terrain() const
     return mTerrain;
 }
 
+inline bool Tile::cantPass() const
+{
+    return mCantPass;
+}
+
 /**
  * Returns the relative probability of this tile appearing while painting.
  */
 inline qreal Tile::probability() const
 {
     return mProbability;
+}
+
+inline void Tile::setCantPass(bool cantPass)
+{
+    mCantPass = cantPass;
 }
 
 /**

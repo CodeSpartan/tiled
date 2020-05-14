@@ -25,6 +25,7 @@
 #include "changetileimagesource.h"
 #include "changetileobjectgroup.h"
 #include "changetileprobability.h"
+#include "changetilecantpass.h"
 #include "changetileterrain.h"
 #include "editablemanager.h"
 #include "editableobjectgroup.h"
@@ -210,6 +211,14 @@ void EditableTile::setProbability(qreal probability)
         asset()->push(new ChangeTileProbability(doc, { tile() }, probability));
     else if (!checkReadOnly())
         tile()->setProbability(probability);
+}
+
+void EditableTile::setCantPass(bool cantPass)
+{
+    if (TilesetDocument *doc = tilesetDocument())
+        asset()->push(new ChangeTileCantPass(doc, { tile() }, cantPass));
+    else if (!checkReadOnly())
+        tile()->setCantPass(cantPass);
 }
 
 void EditableTile::setObjectGroup(EditableObjectGroup *editableObjectGroup)

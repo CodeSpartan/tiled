@@ -30,6 +30,7 @@
 #include "changetile.h"
 #include "changetileimagesource.h"
 #include "changetileprobability.h"
+#include "changetilecantpass.h"
 #include "changewangcolordata.h"
 #include "changewangsetdata.h"
 #include "documentmanager.h"
@@ -166,6 +167,8 @@ void PropertyBrowser::setDocument(Document *document)
                 this, &PropertyBrowser::tilesetChanged);
 
         connect(tilesetDocument, &TilesetDocument::tileProbabilityChanged,
+                this, &PropertyBrowser::tileChanged);
+        connect(tilesetDocument, &TilesetDocument::tileCantPassChanged,
                 this, &PropertyBrowser::tileChanged);
         connect(tilesetDocument, &TilesetDocument::tileImageSourceChanged,
                 this, &PropertyBrowser::tileChanged);
@@ -880,6 +883,13 @@ void PropertyBrowser::addTileProperties()
     addProperty(WidthProperty, QVariant::Int, tr("Width"), groupProperty)->setEnabled(false);
     addProperty(HeightProperty, QVariant::Int, tr("Height"), groupProperty)->setEnabled(false);
 
+    QtVariantProperty *cantPassProperty = addProperty(TileCantPassProperty,
+                                                      QVariant::Bool,
+                                                      tr("Can't Pass"),
+                                                      groupProperty);
+    cantPassProperty->setToolTip(tr("Prevent this tile from being walkable on"));
+    cantPassProperty->setEnabled(mTilesetDocument);
+
     QtVariantProperty *probabilityProperty = addProperty(TileProbabilityProperty,
                                                          QVariant::Double,
                                                          tr("Probability"),
@@ -1389,6 +1399,11 @@ void PropertyBrowser::applyTileValue(PropertyId id, const QVariant &val)
         undoStack->push(new ChangeTileProbability(mTilesetDocument,
                                                   mTilesetDocument->selectedTiles(),
                                                   val.toFloat()));
+        break;
+    case TileCantPassProperty:
+        undoStack->push(new ChangeTileCantPass(mTilesetDocument,
+                                               mTilesetDocument->selectedTiles(),
+                                               val.toInt()));
         break;
     case ImageSourceProperty: {
         const FilePath filePath = val.value<FilePath>();

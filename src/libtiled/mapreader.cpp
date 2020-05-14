@@ -500,6 +500,11 @@ void MapReaderPrivate::readTilesetTile(Tileset &tileset)
     if (!probability.isEmpty())
         tile->setProbability(probability.toDouble());
 
+    // Read tile cantPass
+    QStringRef cantPass = atts.value(QLatin1String("cantPass"));
+    if (!cantPass.isEmpty())
+        tile->setCantPass(cantPass.toInt());
+
     while (xml.readNextStartElement()) {
         if (xml.name() == QLatin1String("properties")) {
             tile->mergeProperties(readProperties());

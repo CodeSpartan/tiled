@@ -135,6 +135,7 @@ private:
         MarginProperty,
         SpacingProperty,
         TileProbabilityProperty,
+        TileCantPassProperty,
         ColumnCountProperty,
         IdProperty,
         EdgeCountProperty,

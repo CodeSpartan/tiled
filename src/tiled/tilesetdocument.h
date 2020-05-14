@@ -113,6 +113,7 @@ public:
     void setTileType(Tile *tile, const QString &type);
     void setTileImage(Tile *tile, const QPixmap &image, const QUrl &source);
     void setTileProbability(Tile *tile, qreal probability);
+    void setTileCantPass(Tile *tile, bool cantPass);
     void swapTileObjectGroup(Tile *tile, std::unique_ptr<ObjectGroup> &objectGroup);
 
     void checkIssues() override;
@@ -151,6 +152,8 @@ signals:
      * Emitted when the terrain probability of a tile changed.
      */
     void tileProbabilityChanged(Tile *tile);
+
+    void tileCantPassChanged(Tile *tile);
 
     /**
      * Notifies the TileCollisionDock about the object group of a tile changing.

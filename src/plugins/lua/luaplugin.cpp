@@ -285,6 +285,8 @@ static bool includeTile(const Tile *tile)
         return true;
     if (tile->probability() != 1.0)
         return true;
+    if (tile->cantPass() != false)
+        return true;
 
     return false;
 }
@@ -407,6 +409,9 @@ void LuaWriter::writeTileset(const Tileset &tileset,
 
         if (tile->probability() != 1.0)
             mWriter.writeKeyAndValue("probability", tile->probability());
+
+        if (tile->cantPass() != false)
+            mWriter.writeKeyAndValue("cantPass", tile->cantPass());
 
         if (ObjectGroup *objectGroup = tile->objectGroup())
             writeObjectGroup(objectGroup, "objectGroup");

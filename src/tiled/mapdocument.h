@@ -358,6 +358,7 @@ signals:
     void tileTypeChanged(Tile *tile);
     void tileImageSourceChanged(Tile *tile);
     void tileProbabilityChanged(Tile *tile);
+    void tileCantPassChanged(Tile *tile);
     void tileObjectGroupChanged(Tile *tile);
 
 public slots:

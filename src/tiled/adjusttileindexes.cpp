@@ -25,6 +25,7 @@
 #include "changetileanimation.h"
 #include "changetileobjectgroup.h"
 #include "changetileprobability.h"
+#include "changetilecantpass.h"
 #include "changetileterrain.h"
 #include "changetilewangid.h"
 #include "changewangcolordata.h"
@@ -161,6 +162,8 @@ AdjustTileMetaData::AdjustTileMetaData(TilesetDocument *tilesetDocument)
     // Adjust tile meta data
     QList<Tile*> tilesChangingProbability;
     QList<qreal> tileProbabilities;
+    QList<Tile*> tilesChangingCantPass;
+    QList<bool> tileCantPasses;
     ChangeTileTerrain::Changes terrainChanges;
     QSet<Tile*> tilesToReset;
 
@@ -179,6 +182,7 @@ AdjustTileMetaData::AdjustTileMetaData(TilesetDocument *tilesetDocument)
                              const Properties &properties,
                              unsigned terrain,
                              qreal probability,
+                             bool cantPass,
                              std::unique_ptr<ObjectGroup> objectGroup,
                              const QVector<Frame> &frames)
     {
@@ -198,6 +202,11 @@ AdjustTileMetaData::AdjustTileMetaData(TilesetDocument *tilesetDocument)
         if (probability != toTile->probability()) {
             tilesChangingProbability.append(toTile);
             tileProbabilities.append(probability);
+        }
+
+        if (cantPass != toTile->cantPass()) {
+            tilesChangingCantPass.append(toTile);
+            tileCantPasses.append(cantPass);
         }
 
         if (objectGroup.get() != toTile->objectGroup())
@@ -229,6 +238,7 @@ AdjustTileMetaData::AdjustTileMetaData(TilesetDocument *tilesetDocument)
                       fromTile->properties(),
                       fromTile->terrain(),
                       fromTile->probability(),
+                      fromTile->cantPass(),
                       std::move(objectGroup),
                       adjustAnimationFrames(fromTile->frames()));
     };
@@ -250,7 +260,7 @@ AdjustTileMetaData::AdjustTileMetaData(TilesetDocument *tilesetDocument)
     QSetIterator<Tile*> resetIterator(tilesToReset);
     while (resetIterator.hasNext()) {
         applyMetaData(resetIterator.next(),
-                      Properties(), -1, 1.0, nullptr, QVector<Frame>());
+                      Properties(), -1, 1.0, false, nullptr, QVector<Frame>());
     }
 
     // Translate tile references in Wang sets and Wang colors
@@ -309,6 +319,13 @@ AdjustTileMetaData::AdjustTileMetaData(TilesetDocument *tilesetDocument)
                                   tilesChangingProbability,
                                   tileProbabilities,
                                   this);
+    }
+
+    if (!tilesChangingCantPass.isEmpty()) {
+        new ChangeTileCantPass(tilesetDocument,
+                               tilesChangingCantPass,
+                               tileCantPasses,
+                               this);
     }
 
     if (!terrainChanges.isEmpty())

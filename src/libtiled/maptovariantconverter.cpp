@@ -262,6 +262,8 @@ QVariant MapToVariantConverter::toVariant(const Tileset &tileset,
         }
         if (tile->probability() != 1.0)
             tileVariant[QLatin1String("probability")] = tile->probability();
+        if (tile->cantPass() != false)
+            tileVariant[QLatin1String("cantPass")] = tile->cantPass();
         if (!tile->imageSource().isEmpty()) {
             const QString rel = toFileReference(tile->imageSource(), mDir);
             tileVariant[QLatin1String("image")] = rel;

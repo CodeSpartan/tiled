@@ -297,6 +297,9 @@ SharedTileset VariantToMapConverter::toTileset(const QVariant &variant)
         if (ok)
             tile->setProbability(probability);
 
+        bool cantPass = tileVar[QLatin1String("cantPass")].toBool();
+        tile->setCantPass(cantPass);
+
         QVariant imageVariant = tileVar[QLatin1String("image")];
         if (!imageVariant.isNull()) {
             const QUrl imagePath = toUrl(imageVariant.toString(), mDir);

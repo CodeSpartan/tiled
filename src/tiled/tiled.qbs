@@ -138,6 +138,8 @@ QtGuiApplication {
         "changetile.h",
         "changetileanimation.cpp",
         "changetileanimation.h",
+        "changetilecantpass.cpp",
+        "changetilecantpass.h",
         "changetileimagesource.cpp",
         "changetileimagesource.h",
         "changetileobjectgroup.cpp",

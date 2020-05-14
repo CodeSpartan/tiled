@@ -40,6 +40,7 @@ Tile::Tile(int id, Tileset *tileset):
     mImageStatus(LoadingReady),
     mTerrain(-1),
     mProbability(1.0),
+    mCantPass(false),
     mCurrentFrameIndex(0),
     mUnusedTime(0)
 {}
@@ -52,6 +53,7 @@ Tile::Tile(const QPixmap &image, int id, Tileset *tileset):
     mImageStatus(image.isNull() ? LoadingError : LoadingReady),
     mTerrain(-1),
     mProbability(1.0),
+    mCantPass(false),
     mCurrentFrameIndex(0),
     mUnusedTime(0)
 {}
@@ -201,6 +203,7 @@ Tile *Tile::clone(Tileset *tileset) const
     c->mType = mType;
     c->mTerrain = mTerrain;
     c->mProbability = mProbability;
+    c->mCantPass = mCantPass;
 
     if (mObjectGroup)
         c->mObjectGroup.reset(mObjectGroup->clone());
