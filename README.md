@@ -97,5 +97,8 @@ to find the shared *libtiled* library immediately after being compiled. When
 packaging Tiled for distribution, the Rpath should be disabled by appending
 `projects.Tiled.useRPaths:false` to the qbs command.
 
-After building, copy Qt5Core.dll, Qt5Gui.dll, Qt5Network.dll, Qt5Qml.dll, 
-Qt5Widgets.dll from Qt\5.12.1\msvc2017_64\bin into install-root.
+After building, go to build's directory /install-dir/ and run `windeployqt tiled.exe`
+to add dependencies.
+
+In order to build python plugin, make sure PYTHONHOME environmental variable
+points to the installation of python (and not to /library/ subfolder).
